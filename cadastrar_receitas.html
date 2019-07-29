@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+	<html>
+	<head>
+		<title>Receitas</title>
+	</head>
+	<body>
+		<h1 style="text-align: center;">RECEITAS</h1>
+		<br>
+		<input type="text" name="texto" placeholder="Digite o nome da receita"> <input type="submit" value="OK"></input>
+		<br>
+		<br>
+		<div id="ingredientes">
+			<input type="text" name="texto" placeholder="Adicionar ingredientes"> <input type="submit" onclick="adicionar_ingrediente()" value="+"></input>
+			<br>
+			<br>
+		</div>
+		<input type="submit" value="Cadastrar"></input> <input type="reset" value="Limpar"></input>
+
+		<script type="text/javascript">
+			function adicionar_ingrediente() {
+				document.getElementById("ingredientes").innerHTML += '<input type="text" name="texto" placeholder="Adicionar ingredientes"> <input type="submit" onclick="adicionar_ingrediente()" value="+"></input><br><br>'
+			}
+		</script>
+	</body>
+</html>
