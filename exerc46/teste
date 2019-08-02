@@ -1,0 +1,40 @@
+import os
+from peewee import *
+
+arq = "minha_saude.db"
+db = SqliteDatabase(arq)
+
+class BaseModel(Model):
+	class Meta():
+		database = db
+
+class Ingrediente(BaseModel):
+	nome = CharField()
+	unidade = CharField()
+
+class Receita(BaseModel):
+	nome = CharField()
+
+class IngredienteDaReceita(BaseModel):
+	receita = ForeignKeyField(Receita)
+	ingrediente = ForeignKeyField(Ingrediente)
+	quantidade = FloatField()
+
+if __name__ == "__main__":
+
+	if os.path.exists(arq):
+		os.remove(arq)
+
+	try: 
+		db.connect()
+		db.create_tables([Ingrediente, Receita, IngredienteDaReceita])
+
+	except OperationalError as erro:
+		print("erro")
+
+	for rec in Receita.select():
+		print(rec.nome)
+		ings = IngredienteDaReceita.select().where(IngredienteDaReceita == rec)
+		print("Ingredientes")
+		for ingred in ings:
+			print(ingred.ingrediente.nome)	
