@@ -29,7 +29,7 @@ if __name__ == "__main__":
 		db.connect()
 		db.create_tables([Ocorrencia, Registro])
 
-	except OperationError as erro:
+	except OperationalError as erro:
 		print("erro")
 
 	o1 = Ocorrencia.create(ocorrencia="dor de cabeça")
