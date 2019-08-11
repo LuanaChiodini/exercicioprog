@@ -9,19 +9,13 @@ class BaseModel(Model):
 		database = db
 
 class Planta(BaseModel):
-	nome_planta = CharField()
-
-class Jardim(BaseModel):
-	nome_jardim = CharField()
-
-class PlantaDoJardim(BaseModel):
-	planta = ForeignKeyField(Planta)
-	jardim = ForeignKeyField(Jardim)
+	nome = CharField()
 	nome_cientifico = CharField()
 	tamanho_folha = CharField()
 
-	def __str__(self):
-		return str(self.planta.nome_planta) + " " + str(self.jardim.nome_jardim) + " " + self.nome_cientifico + " " + self.tamanho_folha
+class Jardim(BaseModel):
+	nome = CharField()
+	plantas = ManyToManyField(Planta)
 
 if __name__ == "__main__":
 	
@@ -30,14 +24,14 @@ if __name__ == "__main__":
 
 	try: 
 		db.connect()
-		db.create_tables([Planta, Jardim, PlantaDoJardim])
+		db.create_tables([Planta, Jardim, Planta.jardims.get_through_model()])
 
 	except OperationalError as erro:
 		print("erro")
 
-	planta1 = Planta.create(nome_planta="nathalia")
-	jardim1 = Jardim.create(nome_jardim="panossol")
-	terreno = PlantaDoJardim.create(planta=planta1, jardim=jardim1, nome_cientifico="kanissi panissi", tamanho_folha="pequena")
-	todos = PlantaDoJardim.select()
-	for i in todos:
-		print(i)
+	planta1 = Planta.create(nome="margarida", nome_cientifico="lolapalusa", tamanho_folha="pequena")
+	jardim1 = Jardim.create(nome="jardim dos sonhos")
+	planta1.jardims.add(planta1)
+	print(jardim1.nome)
+	for i in jardim1.plantas:
+		print(i.nome, i.nome_cientifico, i.tamanho_folha)
